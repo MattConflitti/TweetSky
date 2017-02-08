@@ -1,0 +1,1 @@
+This directory holds the container objects that connect presentation components to state.

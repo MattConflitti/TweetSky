@@ -1,0 +1,1 @@
+This directory holds the algorithmic javascript needed to generate tweetcloud data and analytics

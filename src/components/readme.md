@@ -1,0 +1,1 @@
+This directory holds the reusable components that will compose our application.

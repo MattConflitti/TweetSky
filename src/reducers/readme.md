@@ -1,0 +1,1 @@
+This directory holds the Redux reducers that process actions and update state.

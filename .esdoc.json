@@ -1,0 +1,6 @@
+{
+  "source": "./src",
+  "destination": "./doc",
+  "title": "CIS350 TweetCloud",
+  "excludes": ["node_modules","doc","__tests__"]
+}
