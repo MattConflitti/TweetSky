@@ -6,7 +6,9 @@ import {
 class Input extends Component {
     render() {
         return (
-            <TextInput {...this.props} />
+            <TextInput 
+                {...this.props}
+            />
         );
     }
 }

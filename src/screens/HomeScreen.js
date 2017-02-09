@@ -4,12 +4,14 @@ import {
     Text,
     StyleSheet
 } from 'react-native';
+import { SearchBar } from '../components/SearchBar';
 
 class HomeScreen extends Component {
     render() {
         return (
             <View>
                 <Text>Welcome!!!</Text>
+                <SearchBar />
             </View>
         );
     }

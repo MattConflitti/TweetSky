@@ -26,9 +26,9 @@ export default class App extends Component {
     renderScene(route, navigator) {
         switch (route.index) {
             case 0 :
-                return (<HomeScreen />);
+                return (<HomeScreen navigator={navigator} />);
             case 1 :
-                return (<SearchResultsScreen />);
+                return (<SearchResultsScreen navigator={navigator} />);
             default :
                 navigator.replace(this.routes[0]);
         }
