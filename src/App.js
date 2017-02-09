@@ -2,43 +2,90 @@ import React, { Component } from 'react';
 import {
     StyleSheet,
     Text,
-    View
+    View,
+    TouchableHighlight,
+    Navigator
 } from 'react-native';
+import { HomeScreen, SearchResultsScreen } from './screens/index';
 
 export default class App extends Component {
+
+    routes = [
+        {
+            title: 'TweetSky',
+            index: 0,
+            scene: HomeScreen
+        },
+        {
+            title: 'Search Results',
+            index: 1,
+            scene: SearchResultsScreen
+        }
+    ];
+
+    renderScene(route, navigator) {
+        switch (route.index) {
+            case 0 :
+                return (<HomeScreen />);
+            case 1 :
+                return (<SearchResultsScreen />);
+            default :
+                navigator.replace(this.routes[0]);
+        }
+    }
+
     render() {
         return (
-            <View style={styles.container}>
-                <Text style={styles.welcome}>
-                    Welcome to React Native!
-                </Text>
-                <Text style={styles.instructions}>
-                    To get started, edit index.android.js
-                </Text>
-                <Text style={styles.instructions}>
-                    Double tap R on your keyboard to reload,{'\n'}
-                    Shake or press menu button for dev menu
-                </Text>
-            </View>
+            <Navigator
+                initialRoute={this.routes[0]}
+                initialRouteStack={this.routes}
+                renderScene={this.renderScene}
+                style={{ paddingTop: 65 }}
+                configureScene={(route, routeStack) => Navigator.SceneConfigs.FloatFromBottom}
+                navigationBar={
+                     <Navigator.NavigationBar
+                       routeMapper={{
+                         LeftButton: (route, navigator, index, navState) => {
+                            if (route.index === 0) {
+                              return null;
+                            } else {
+                              return (
+                                <TouchableHighlight onPress={() => navigator.pop()}>
+                                  <Text>Back</Text>
+                                </TouchableHighlight>
+                              );
+                            }
+                          },
+                         RightButton: (route, navigator, index, navState) => {
+                             return (
+                                    <TouchableHighlight onPress={() => navigator.push(this.routes[1])}>
+                                        <Text>Search</Text>
+                                    </TouchableHighlight>
+                                 );
+                         },
+                         Title: (route, navigator, index, navState) => {
+                             return (<Text>{route.title}</Text>);
+                         },
+                       }}
+                       style={styles.navBar}
+                       navigationStyles={Navigator.NavigationBar.StylesIOS}
+                     />
+                }
+            />
         );
     }
 }
 
 const styles = StyleSheet.create({
-    container: {
+    navBar: {
+        backgroundColor: 'white',
         flex: 1,
+        flexDirection: 'row',
         justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#F5FCFF',
+        alignItems: 'center'
     },
-    welcome: {
-        fontSize: 20,
-        textAlign: 'center',
-        margin: 10,
-    },
-    instructions: {
-        textAlign: 'center',
-        color: '#333333',
-        marginBottom: 5,
-    },
+    navText: {
+        fontWeight: 'bold',
+        fontSize: 20
+    }
 });
