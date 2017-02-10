@@ -4,14 +4,13 @@ import {
     Text,
     StyleSheet
 } from 'react-native';
-import { SearchBar } from '../components/SearchBar';
+import { SearchBar, Input } from '../components/index';
 
 class HomeScreen extends Component {
     render() {
         return (
-            <View>
-                <Text>Welcome!!!</Text>
-                <SearchBar />
+            <View style={{flex: 1}}>
+                <Input placeholder="Hello" onChangeText={() => {}} secureTextEntry={false} value="" />
             </View>
         );
     }

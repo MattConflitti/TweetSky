@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {
-    TouchableOpacity
+    TouchableOpacity,
+    StyleSheet
 } from 'react-native';
 
 class Button extends Component {

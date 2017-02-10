@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {
-    View
+    View,
+    StyleSheet
 } from 'react-native';
 import { Input, Button } from './index';
 
