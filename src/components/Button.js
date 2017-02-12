@@ -4,18 +4,35 @@ import {
     StyleSheet
 } from 'react-native';
 
+/**
+ * Generic button component that can be customizes for any use in application
+ */
 class Button extends Component {
+    /**
+     * Renders button component to screen
+     * @returns {XML}
+     */
     render() {
         return (
-            <TouchableOpacity {...this.props}>
-                {this.children}
+            <TouchableOpacity onPress={this.props.onPress}>
+                {this.props.children}
             </TouchableOpacity>
         );
     }
 }
 
-const styles = StyleSheet.create({});
+/**
+ * Stylesheet used to style this component.
+ * @type {Object}
+ */
+const styles = StyleSheet.create({
+    buttonStyle: {
+        flex: 1
+    }
+});
 
-Button.propTypes = {};
+Button.propTypes = {
+    onPress: React.PropTypes.func
+};
 
 export { Button };

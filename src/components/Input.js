@@ -14,12 +14,13 @@ class Input extends Component {
      * @returns {XML}
      */
     render() {
-        const { placeholder, secureTextEntry, value, onChangeText } = this.props;
+        const { placeholder, value, onChangeText } = this.props;
         return (
             <View style={styles.containerStyle}>
                 <TextInput
+                    underlineColorAndroid="rgba(0,0,0,0)"
                     style={styles.inputStyle}
-                    secureTextEntry={secureTextEntry}
+                    secureTextEntry={false}
                     value={value}
                     placeholder={placeholder}
                     onChangeText={onChangeText}
@@ -38,16 +39,12 @@ const styles = StyleSheet.create({
     inputStyle: {
         borderBottomWidth: 1,
         borderBottomColor: 'gray',
-        flex: 1,
         backgroundColor: 'white',
         fontSize: 18,
         lineHeight: 23
     },
     containerStyle: {
-        height: 40,
-        flex: 1,
-        flexDirection: 'row',
-        alignItems: 'center'
+        height: 40
     }
 });
 

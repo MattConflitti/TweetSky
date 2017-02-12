@@ -9,8 +9,8 @@ import { SearchBar, Input } from '../components/index';
 class HomeScreen extends Component {
     render() {
         return (
-            <View style={{flex: 1}}>
-                <Input placeholder="Hello" onChangeText={() => {}} secureTextEntry={false} value="" />
+            <View style={{ flex: 1 }}>
+                <SearchBar />
             </View>
         );
     }

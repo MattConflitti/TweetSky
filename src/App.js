@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import {
     StyleSheet,
     Text,
-    View,
     TouchableHighlight,
     Navigator
 } from 'react-native';
@@ -21,22 +20,23 @@ export default class App extends Component {
         super();
 
         /**
+         * TODO create router object to store this info
+         * TODO for easier nav push anywhere in app
          * Stores route information for Navigator
          * @type {Object[]}
          * @property {string} routes[*].title
          * @property {number} routes[*].index
-         * @property {Object} routes[*].scene
          */
         this.routes = [
             {
                 title: 'TweetSky',
                 index: 0,
-                scene: HomeScreen
+                name: 'home'
             },
             {
-                title: 'Search Results',
+                title: 'Options',
                 index: 1,
-                scene: SearchResultsScreen
+                name: 'options'
             }
         ];
     }
@@ -48,10 +48,10 @@ export default class App extends Component {
      * @returns {XML}
      */
     renderScene(route, navigator) {
-        switch (route.index) {
-            case 0 :
+        switch (route.name) {
+            case 'home' :
                 return (<HomeScreen navigator={navigator} />);
-            case 1 :
+            case 'options' :
                 return (<SearchResultsScreen navigator={navigator} />);
             default :
                 navigator.replace(this.routes[0]);
@@ -87,11 +87,18 @@ export default class App extends Component {
                             }
                           },
                          RightButton: (route, navigator, index, navState) => {
-                             return (
-                                    <TouchableHighlight onPress={() => navigator.push(this.routes[1])}>
-                                        <Text>Search</Text>
+                             //TODO add gear instead
+                             if (route.index === 1) {
+                                return null;
+                             } else {
+                                return (
+                                    <TouchableHighlight
+                                        onPress={() => navigator.push(this.routes[1])}
+                                    >
+                                        <Text>Options</Text>
                                     </TouchableHighlight>
-                                 );
+                                );
+                            }
                          },
                          Title: (route, navigator, index, navState) => {
                              return (<Text>{route.title}</Text>);
