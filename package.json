@@ -9,10 +9,12 @@
     "postBuild": "npm run eslintReport || esdoc"
   },
   "dependencies": {
+    "axios": "^0.15.3",
     "react": "15.4.2",
     "react-native": "0.40.0",
     "react-native-autocomplete-input": "^3.0.0",
-    "react-native-vector-icons": "^4.0.0"
+    "react-native-vector-icons": "^4.0.0",
+    "twitter": "^1.7.0"
   },
   "devDependencies": {
     "babel-jest": "18.0.0",

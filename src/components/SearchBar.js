@@ -5,9 +5,10 @@ import {
     Text,
     TouchableOpacity
 } from 'react-native';
+import axios from 'axios';
 import Autocomplete from 'react-native-autocomplete-input';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { Input, Button } from './index';
+import { Button } from './index';
 
 /**
  * SearchBar component serves as entry into
@@ -37,6 +38,21 @@ class SearchBar extends Component {
                 }
             ]
         };
+    }
+
+    componentDidMount() {
+
+        //YAY IT WORKS!!!
+        axios.get('https://api.twitter.com/1.1/search/tweets.json?q=hello',
+            { headers: {
+                Authorization: 'Bearer AAAAAAAAAAAAAAAAAAAAALPeywAAAAAA%2B7ry%2BdaSbD7EQQbgQKqYCfpRyck%3DDyuoFY5hN4KqTZNIIX6P3L9IBdvhiZdMT6xYvoyHaVxrC6mGoJ' } })
+            .then(response => {
+                // If request is good...
+                console.log(response.data);
+            })
+            .catch((error) => {
+                console.log('error ' + error);
+            });
     }
 
     /**
