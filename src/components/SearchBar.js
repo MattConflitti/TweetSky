@@ -41,22 +41,23 @@ class SearchBar extends Component {
      * Set up function to get data when component is mounted to screen
      * @override
      */
-    componentDidMount() {
+    componentWillMount() {
         //YAY IT WORKS!!!
-        axios.get('https://api.twitter.com/1.1/trends/place.json?id=23424977',
-            { headers:
-                {
-                    Authorization: 'Bearer AAAAAAAAAAAAAAAAAAAAALPeywAAAAAA%2B7ry%2BdaSbD7EQQbgQKqYCfpRyck%3DDyuoFY5hN4KqTZNIIX6P3L9IBdvhiZdMT6xYvoyHaVxrC6mGoJ'
-                }
-            })
-            .then(response => {
-                // If request is good...
-                console.log(response.data[0].trends);
-                this.setState({ results: response.data[0].trends });
-            })
-            .catch((error) => {
-                console.log(error);
-            });
+        // axios.get('https://api.twitter.com/1.1/trends/place.json?id=23424977',
+        //     { headers:
+        //         {
+        //             Authorization: 'Bearer AAAAAAAAAAAAAAAAAAAAALPeywAAAAAA%2B7ry%2BdaSbD7EQQbgQKqYCfpRyck%3DDyuoFY5hN4KqTZNIIX6P3L9IBdvhiZdMT6xYvoyHaVxrC6mGoJ'
+        //         }
+        //     })
+        //     .then(response => {
+        //         // If request is good...
+        //         console.log(response.data[0].trends);
+        //         this.setState({ results: response.data[0].trends });
+        //     })
+        //     .catch((error) => {
+        //         console.log(error);
+        //     });
+        this.props.getTweets();
     }
 
     /**
@@ -69,7 +70,7 @@ class SearchBar extends Component {
             return [];
         }
 
-        const { results } = this.state;
+        const results = this.props.tweetData;
         const regex = new RegExp(`${query.trim()}`, 'i');
         return results.filter(result => result.name.search(regex) >= 0);
     }

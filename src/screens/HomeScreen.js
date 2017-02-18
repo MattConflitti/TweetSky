@@ -4,13 +4,13 @@ import {
     Text,
     StyleSheet
 } from 'react-native';
-import { SearchBar, Input } from '../components/index';
+import SearchBarContainer from '../containers/SearchBarContainer';
 
 class HomeScreen extends Component {
     render() {
         return (
             <View style={{ flex: 1 }}>
-                <SearchBar />
+                <SearchBarContainer />
             </View>
         );
     }

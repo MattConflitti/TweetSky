@@ -1,4 +1,7 @@
 import { combineReducers } from 'redux';
-import * as searchReducer from './search';
+import GetTweetsReducer from './GetTweetsReducer';
 
-export default combineReducers(searchReducer);
+export default combineReducers({
+    tweets: GetTweetsReducer
+});
+

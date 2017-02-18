@@ -6,9 +6,8 @@ import {
     Navigator
 } from 'react-native';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import { HomeScreen, SearchResultsScreen } from '../screens/index';
-import { ActionCreators } from '../actions';
+import * as actions from '../actions';
 
 /**
  * Main entry point to application.
@@ -147,14 +146,10 @@ const styles = StyleSheet.create({
     }
 });
 
-const mapDispatchToProps = (dispatch) => {
-    return bindActionCreators(ActionCreators, dispatch);
-};
+// const mapStateToProps = (state) => {
+//     return {
+//         navigationState: state.navigationState
+//     };
+// };
 
-const mapStateToProps = (state) => {
-    return {
-        navigationState: state.navigationState
-    };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(AppContainer);
+export default connect(null, actions)(AppContainer);
