@@ -4,8 +4,8 @@
 
 # React Native
 #
-ios/tweetcloud/
-android/app/
+#ios/tweetcloud/
+#android/app/
 doc/
 style_report.html
 
