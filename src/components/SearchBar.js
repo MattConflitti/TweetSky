@@ -3,7 +3,9 @@ import {
     View,
     StyleSheet,
     Text,
-    TouchableOpacity
+    TouchableOpacity,
+    ListView,
+    Keyboard
 } from 'react-native';
 import axios from 'axios';
 import Autocomplete from 'react-native-autocomplete-input';
@@ -22,6 +24,8 @@ class SearchBar extends Component {
     constructor() {
         super();
 
+        this.ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
+
         /**
          * State object stores local state of the component for
          * typing functionality
@@ -29,30 +33,31 @@ class SearchBar extends Component {
          */
         this.state = {
             searchValue: '',
-            results: [
-                {
-                    text: 'Test1'
-                },
-                {
-                    text: 'Test2'
-                }
-            ]
+            results: []
         };
     }
 
-    componentDidMount() {
-
+    /**
+     * Set up function to get data when component is mounted to screen
+     * @override
+     */
+    componentWillMount() {
         //YAY IT WORKS!!!
-        axios.get('https://api.twitter.com/1.1/search/tweets.json?q=hello',
-            { headers: {
-                Authorization: 'Bearer AAAAAAAAAAAAAAAAAAAAALPeywAAAAAA%2B7ry%2BdaSbD7EQQbgQKqYCfpRyck%3DDyuoFY5hN4KqTZNIIX6P3L9IBdvhiZdMT6xYvoyHaVxrC6mGoJ' } })
-            .then(response => {
-                // If request is good...
-                console.log(response.data);
-            })
-            .catch((error) => {
-                console.log('error ' + error);
-            });
+        // axios.get('https://api.twitter.com/1.1/trends/place.json?id=23424977',
+        //     { headers:
+        //         {
+        //             Authorization: 'Bearer AAAAAAAAAAAAAAAAAAAAALPeywAAAAAA%2B7ry%2BdaSbD7EQQbgQKqYCfpRyck%3DDyuoFY5hN4KqTZNIIX6P3L9IBdvhiZdMT6xYvoyHaVxrC6mGoJ'
+        //         }
+        //     })
+        //     .then(response => {
+        //         // If request is good...
+        //         console.log(response.data[0].trends);
+        //         this.setState({ results: response.data[0].trends });
+        //     })
+        //     .catch((error) => {
+        //         console.log(error);
+        //     });
+        this.props.getTweets();
     }
 
     /**
@@ -65,52 +70,68 @@ class SearchBar extends Component {
             return [];
         }
 
-        const { results } = this.state;
+        const results = this.props.tweetData;
         const regex = new RegExp(`${query.trim()}`, 'i');
-        return results.filter(result => result.text.search(regex) >= 0);
+        return results.filter(result => result.name.search(regex) >= 0);
     }
 
     /**
      * Renders the SearchBar component
      * @returns {XML}
+     * @override
      */
     render() {
         const { searchValue } = this.state;
         const results = this.getResults(searchValue);
         const comp = (a, b) => a.toLowerCase().trim() === b.toLowerCase().trim();
         return (
-            <View style={styles.containerStyle}>
-                <View style={{ flex: 1, backgroundColor: '#F5FCFF' }}>
-                    <Autocomplete
-                        autoCapitalize="none"
-                        autoCorrect={false}
-                        containerStyle={styles.autocompleteContainer}
-                        data={results.length === 1 &&
-                            comp(searchValue, results[0].text) ? [] : results}
-                        defaultValue={searchValue}
-                        onChangeText={text => this.setState({ searchValue: text })}
-                        placeholder="Enter a #hashtag, phrase, or @user..."
-                        renderItem={({ text }) => (
-                        <TouchableOpacity onPress={() => this.setState({ searchValue: text })}>
-                          <Text style={styles.itemText}>
-                            {text}
-                          </Text>
-                        </TouchableOpacity>
-                      )}
-                    />
+            <View style={{ flex: 1, flexDirection: 'column', position: 'relative' }}>
+                <View style={styles.containerStyle}>
+                    <View style={{ flex: 1 }}>
+                        <Autocomplete
+                            autoCapitalize="none"
+                            autoCorrect={false}
+                            containerStyle={styles.autocompleteContainer}
+                            data={results.length === 1 &&
+                                comp(searchValue, results[0].name) ? [] : results}
+                            defaultValue={searchValue}
+                            onChangeText={text => this.setState({ searchValue: text })}
+                            placeholder="Enter a #hashtag, phrase, or @user..."
+                            renderItem={({ name }) => (
+                            <TouchableOpacity
+                                onPress={() => {
+                                        this.setState({ searchValue: name });
+                                        Keyboard.dismiss();
+                                        //TODO also search once clicked
+                                    }
+                                }
+                            >
+                              <Text style={styles.itemText}>
+                                {name}
+                              </Text>
+                            </TouchableOpacity>
+                          )}
+                        />
+                    </View>
+                    <View style={styles.searchButton}>
+                        <Button title="Search" onPress={() => { Keyboard.dismiss(); }}>
+                            <Icon name="search" size={30} color="#000" />
+                        </Button>
+                    </View>
                 </View>
-                <View style={styles.searchButton}>
-                    <Button title="Search" onPress={() => {}}>
-                        <Icon name="search" size={30} color="#000" />
-                    </Button>
+                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                    {/*place word cloud here*/}
+                    <Text>{this.state.searchValue}</Text>
                 </View>
+                {/*<ListView*/}
+                    {/*dataSource={this.ds.cloneWithRows(this.state.results)}*/}
+                    {/*renderRow={({ name }) => <Text>{name}</Text>}*/}
+                {/*/>*/}
+
             </View>
         );
     }
 }
-
-//TODO get request for US trending hashtags
-//https://api.twitter.com/1.1/trends/place.json?id=23424977
 
 /**
  * Stylesheet contains styles for this component
@@ -118,29 +139,25 @@ class SearchBar extends Component {
  */
 const styles = StyleSheet.create({
     containerStyle: {
-        flex: 1,
-        flexDirection: 'row',
-        backgroundColor: 'white',
-        position: 'relative'
+        flexDirection: 'row'
     },
     autocompleteContainer: {
-        flex: 1,
         left: 0,
         position: 'absolute',
         right: 0,
         top: 0,
-        zIndex: 1
+        zIndex: 10,
+        flex: 1
     },
     itemText: {
         fontSize: 15,
-        margin: 2
+        margin: 2,
+        backgroundColor: 'white'
     },
     searchButton: {
         width: 40,
-        position: 'absolute',
-        zIndex: 10,
-        right: 0,
-        paddingTop: 5
+        paddingTop: 5,
+        paddingLeft: 5
     }
 });
 
