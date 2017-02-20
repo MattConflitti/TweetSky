@@ -4,13 +4,15 @@ import { SearchBar } from '../components';
 
 const mapStateToProps = (state) => {
     return {
-        tweetData: state.tweets
+        suggestionData: state.tweets.suggestions,
+        tweetData: state.tweets.results
     };
 };
 
 function mapDispatchToProps(dispatch) {
     return {
-        getTweets: () => actions.getTweets(dispatch),
+        getSuggestions: () => actions.getSuggestions(dispatch),
+        getTweets: (query) => actions.getTweets(query, dispatch)
     };
 }
 

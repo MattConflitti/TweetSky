@@ -5,11 +5,15 @@ import {
     StyleSheet
 } from 'react-native';
 
-class SearchResultsScreen extends Component {
+
+/**
+ * Set up colors, number of results, type of results, date, etc
+ */
+class OptionsScreen extends Component {
     render() {
         return (
             <View>
-                <Text>Search Results!!!</Text>
+                <Text>Refine your search:</Text>
             </View>
         );
     }
@@ -17,6 +21,6 @@ class SearchResultsScreen extends Component {
 
 const styles = StyleSheet.create({});
 
-SearchResultsScreen.propTypes = {};
+OptionsScreen.propTypes = {};
 
-export { SearchResultsScreen };
+export { OptionsScreen };

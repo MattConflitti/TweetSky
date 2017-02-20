@@ -6,7 +6,7 @@ import {
     Navigator
 } from 'react-native';
 import { connect } from 'react-redux';
-import { HomeScreen, SearchResultsScreen } from '../screens/index';
+import { HomeScreen, OptionsScreen } from '../screens/index';
 import * as actions from '../actions';
 
 /**
@@ -54,7 +54,7 @@ class AppContainer extends Component {
             case 'home' :
                 return (<HomeScreen navigator={navigator} />);
             case 'options' :
-                return (<SearchResultsScreen navigator={navigator} />);
+                return (<OptionsScreen navigator={navigator} />);
             default :
                 navigator.replace(this.routes[0]);
         }
