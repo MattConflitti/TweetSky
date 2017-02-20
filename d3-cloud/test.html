@@ -30,18 +30,41 @@
     var text = "We have front row seats for this Theater of Mass Destruction.  The Demolitions Committee of Project Mayhem wrapped the foundation columns of ten buildings with blasting gelatin.  In two minutes, primary charges will blow base charges, and those buildings will be reduced to smoldering rubble.  I know this because Tyler knows this.";
     var frequency_list = parseText(text);
 
-
-    var color = "#06F6F3";
-
-    d3.layout.cloud().size([800, 300])
+    var layout = d3.layout.cloud().size([500, 500])
         .words(frequency_list)
-        .rotate(0)
+        .padding(5)
+        .rotate(function() { return ~~(Math.random() * 2) * 90; })
+        .font("Impact")
         .fontSize(function(d) { return d.size; })
-        .on("end", draw)
-        .start();
+        .on("end", draw);
+
+    layout.start();
 
     function draw(words) {
         d3.select("body").append("svg")
+            .attr("width", layout.size()[0])
+            .attr("height", layout.size()[1])
+            .append("g")
+            .attr("transform", "translate(" + layout.size()[0] / 2 + "," + layout.size()[1] / 2 + ")")
+            .selectAll("text")
+            .data(words)
+            .enter().append("text")
+            .style("font-size", function(d) { return d.size + "px"; })
+            .style("font-family", "Impact")
+            .style("fill", function(d, i) {
+                var colors = ["#0084b4",  "#00aced",  "#1dcaff", "#c0deed"];
+                min = Math.ceil(0);
+                max = Math.floor(3);
+                return colors[Math.floor(Math.random() * (max - min)) + min]
+            })
+            //.style("fill", function(d, i) { return fill(i); })
+            .attr("text-anchor", "middle")
+            .attr("transform", function(d) {
+                return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+            })
+            .text(function(d) { return d.text; });
+    }
+        /*d3.select("body").append("svg")
             .attr("width", 850)
             .attr("height", 350)
             .attr("class", "wordcloud")
@@ -53,12 +76,11 @@
             .data(words)
             .enter().append("text")
             .style("font-size", function(d) { return d.size + "px"; })
-            .style("fill", function(d, i) { return "#06F6F3"; })
             .attr("transform", function(d) {
                 return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
             })
             .text(function(d) { return d.text; });
-    }
+    }*/
 </script>
 
 <div style="width: 40%;">
